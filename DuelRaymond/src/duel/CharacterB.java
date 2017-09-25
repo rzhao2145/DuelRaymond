@@ -4,11 +4,11 @@ public class CharacterB implements Dueler {
 	
 	private String name;
 	private int hp2;
-	private int rounds2 = 0;
+	private boolean isLoaded;
 
 	
 	public CharacterB(){
-		
+		isLoaded = false;
 	}
 	public void taunt() {
 		String taunt =  ("Fight");
@@ -38,15 +38,33 @@ public class CharacterB implements Dueler {
 		}
 	}
 	public int getAction(Object caller) {
-		if(rounds2 == 0) {
-			rounds2++;
-			return 0;
-		} else {
-			rounds2++;
-			return (int)(Math.random()*3);
+		if(caller instanceof Duel) {
+			if(!isLoaded) {
+				if(Math.random() > .5) {
+					isLoaded = true;
+					return 0; //LOADED
+				} 
+				else {
+					return 2; //GUARDING
+				}
+			} 
+			else {
+				if(Math.random() > .5) {
+					isLoaded = false;
+					return 1; //SHOOTING
+				} 
+				else {
+					return 2; //GUARDING
+				}
+			}
+		}
+		else {
+			return 3;
 		}
 	}
 	public void hit(Object caller) {
-		hp2 = hp2 - 10;
+		if(caller instanceof Duel) {
+			hp2 = hp2 - 10;
+		}
 	}
 }
